@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Лобораторная работа No3</title>
+</head>
+
+<body style="padding: 0; ">
+    <div style="height: 80vh; display: flex; align-items: center; justify-content: space-evenly;">
+        <canvas id="сhart"></canvas>
+    </div>
+    <div style="height: 18vh; display: flex; align-items: center; justify-content: space-evenly;">
+        <div>
+            <div style="text-align: center; width: 100%;">Количество тактов накопления ЗП при работе ПЗС матриц в режиме ВЗН: <span id="times_number__value"></span></div>
+            <input id="times_number" type="range" min="1" max="20" value=10 list="times_number__markers">
+            <datalist id="times_number__markers">
+              <option value="1" label="1">1</option>
+              <option value="5" label="5">5</option>
+              <option value="10" label="10">10</option>
+              <option value="15" label="15">15</option>
+              <option value="20" label="20">20</option>
+            </datalist>
+        </div>
+        <div>
+            <div style="text-align: center; width: 100%;">Значение смаза: <span id="blur__value"></span></div>
+            <input id="blur" type="range" min="-5" max="5" value=0 list="blur__markers">
+            <datalist id="blur__markers">
+              <option value="-5" label="-5"></option>
+              <option value="0" label="0"></option>
+              <option value="5" label="5"></option>
+            </datalist>
+        </div>
+    </div>
+      
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="main.js"></script>
+</body>
+
+</html>
