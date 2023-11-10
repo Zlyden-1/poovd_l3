@@ -6,14 +6,14 @@
     <title>Лобораторная работа No3</title>
 </head>
 
-<body style="padding: 0; ">
+<body style="padding: 0; box-sizing: border-box;">
     <div style="height: 80vh; display: flex; align-items: center; justify-content: space-evenly;">
         <canvas id="сhart"></canvas>
     </div>
     <div style="height: 18vh; display: flex; align-items: center; justify-content: space-evenly;">
         <div>
             <div style="text-align: center; width: 100%;">Количество тактов накопления ЗП при работе ПЗС матриц в режиме ВЗН: <span id="times_number__value"></span></div>
-            <input id="times_number" type="range" min="1" max="20" value=10 list="times_number__markers">
+            <input id="times_number" type="range" min="1" max="20" value=10 list="times_number__markers" style="text-align: center; width: 100%;">
             <datalist id="times_number__markers">
               <option value="1" label="1">1</option>
               <option value="5" label="5">5</option>
@@ -24,7 +24,7 @@
         </div>
         <div>
             <div style="text-align: center; width: 100%;">Значение смаза: <span id="blur__value"></span></div>
-            <input id="blur" type="range" min="-5" max="5" value=0 list="blur__markers">
+            <input id="blur" type="range" min="-5" max="5" value=0 list="blur__markers" style="text-align: center; width: 100%;">
             <datalist id="blur__markers">
               <option value="-5" label="-5"></option>
               <option value="0" label="0"></option>
@@ -34,6 +34,7 @@
     </div>
       
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
     <script src="main.js"></script>
 </body>
 
