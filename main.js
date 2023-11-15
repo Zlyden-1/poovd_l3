@@ -40,13 +40,10 @@ const calculateExposure = () => {
     const raysExposureValues = [];
     const raysNumber = (2*(Math.abs(blurLevel)+1))*cellSize+1;
     chartData.datasets[0].data = new Array(raysNumber)
-    chartData.labels = [...chartData.datasets[0].data.keys()]
-    for (let i = 0; i < raysNumber; i++) {
-        currentCellStart = 4 + i*cellSize;
-        currentCellEnd = currentCellStart + cellSize-1;
-        for (let j = 0; j < timesNumber; j++) {
-            currentCellStart = 4 + i*cellSize;
-            currentCellEnd = currentCellStart + cellSize-1;
+    chartData.labels = Array.from({length: raysNumber}, (_, i) => i - Math.floor(raysNumber/2))
+    for (let i = 0; i < raysNumber; i++) { //номер луча
+        for (let j = 0; j < timesNumber; j++) { //такт
+            const y = i + j*cellSize;
         }
     }
     chart.update();
