@@ -21,6 +21,17 @@ const chart = new Chart(chartCanvas, {
     options: {
         scales: {
             y: {
+                title: {
+                    display: true,
+                    text: "Время экспонирования лучей, тактов",
+                },
+                beginAtZero: true,
+            },
+            x: {
+                title: {
+                    display: true,
+                    text: "Лучи, №",
+                },
                 beginAtZero: true,
             },
         },
@@ -39,16 +50,22 @@ const calculateExposure = () => {
     const blurVariation = blurLevel/timesNumber;
     const raysExposureValues = [];
     const raysNumber = (2*(Math.abs(blurLevel)+1))*cellSize+1;
-    chartData.datasets[0].data = new Array(raysNumber)
-    chartData.labels = [...chartData.datasets[0].data.keys()]
-    for (let i = 0; i < raysNumber; i++) {
-        currentCellStart = 4 + i*cellSize;
-        currentCellEnd = currentCellStart + cellSize-1;
+    const fistCellStart = (raysNumber-1)/2;
+    const y_delta = cellSize*(1+blurLevel/timesNumber);
+    console.log(y_delta);
+    for (let i = 0; i < raysNumber; i+=raysInterval) {
+        raysExposureValues.push(0);
         for (let j = 0; j < timesNumber; j++) {
-            currentCellStart = 4 + i*cellSize;
-            currentCellEnd = currentCellStart + cellSize-1;
+            const y = i+j*y_delta;
+            const y_next = y+y_delta;
+            const L = fistCellStart+j*cellSize;
+            const R = L+cellSize;
+            const intersectionLength = Math.max(0, Math.min(y_next, R) - Math.max(y, L));
+            raysExposureValues[i] += intersectionLength/cellSize;
         }
     }
+    chartData.datasets[0].data = raysExposureValues;
+    chartData.labels = [...raysExposureValues.keys()];
     chart.update();
 }
 
