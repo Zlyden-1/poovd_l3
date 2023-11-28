@@ -12,6 +12,7 @@ const chartData = {
             borderWidth: 1,
         },
     ],
+    lineAtIndex: 2,
 };
 
 const CHART_COLORS = {
@@ -27,19 +28,19 @@ const CHART_COLORS = {
 const quadrants = {
     id: 'quadrants',
     beforeDraw(chart, args, options) {
-      const {ctx, chartArea: {left, top, right, bottom}, scales: {x, y}} = chart;
-      const midX = x.getPixelForValue(0);
-      const midY = y.getPixelForValue(0);
-      ctx.save();
-      ctx.fillStyle = options.topLeft;
-      ctx.fillRect(left, top, midX - left, midY - top);
-      ctx.fillStyle = options.topRight;
-      ctx.fillRect(midX, top, right - midX, midY - top);
-      ctx.fillStyle = options.bottomRight;
-      ctx.fillRect(midX, midY, right - midX, bottom - midY);
-      ctx.fillStyle = options.bottomLeft;
-      ctx.fillRect(left, midY, midX - left, bottom - midY);
-      ctx.restore();
+        const {ctx, chartArea: {left, top, right, bottom}, scales: {x, y}} = chart;
+        const cellStart = parseInt(x.ticks.length/2);
+        const midX = x.getPixelForValue(cellStart);
+        const bottomY = y.getPixelForValue(0);
+        const topY = y.getPixelForValue(y.ticks.length-1)
+        ctx.strokeStyle = CHART_COLORS.red;
+        ctx.save();
+        ctx.beginPath();
+        ctx.moveTo(midX, topY);
+        ctx.lineTo(midX, bottomY);
+        ctx.closePath();
+        ctx.stroke();
+        ctx.restore();
     }
 }
 
@@ -50,30 +51,13 @@ const chart = new Chart(chartCanvas, {
         plugins: {
           quadrants: {
             topLeft: CHART_COLORS.red,
-            topRight: CHART_COLORS.blue,
+            topRight: CHART_COLORS.grey,
             bottomRight: CHART_COLORS.green,
             bottomLeft: CHART_COLORS.yellow,
           }
         }
       },
     plugins: [quadrants]
-        scales: {
-            y: {
-                title: {
-                    display: true,
-                    text: "Время экспонирования лучей, тактов",
-                },
-                beginAtZero: true,
-            },
-            x: {
-                title: {
-                    display: true,
-                    text: "Лучи, №",
-                },
-                beginAtZero: true,
-            },
-        },
-    },
 });
 
 const cellSize = 8, raysInterval = 1;
@@ -120,4 +104,3 @@ blurInput.oninput = (e) => {
     blurValue.innerHTML = e.target.value;
     calculateExposure();
 }
-
