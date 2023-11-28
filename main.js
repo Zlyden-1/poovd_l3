@@ -12,13 +12,51 @@ const chartData = {
             borderWidth: 1,
         },
     ],
-    lineAtIndex: 2,
 };
+
+const CHART_COLORS = {
+    red: 'rgb(255, 99, 132)',
+    orange: 'rgb(255, 159, 64)',
+    yellow: 'rgb(255, 205, 86)',
+    green: 'rgb(75, 192, 192)',
+    blue: 'rgb(54, 162, 235)',
+    purple: 'rgb(153, 102, 255)',
+    grey: 'rgb(201, 203, 207)'
+  };
+
+const quadrants = {
+    id: 'quadrants',
+    beforeDraw(chart, args, options) {
+      const {ctx, chartArea: {left, top, right, bottom}, scales: {x, y}} = chart;
+      const midX = x.getPixelForValue(0);
+      const midY = y.getPixelForValue(0);
+      ctx.save();
+      ctx.fillStyle = options.topLeft;
+      ctx.fillRect(left, top, midX - left, midY - top);
+      ctx.fillStyle = options.topRight;
+      ctx.fillRect(midX, top, right - midX, midY - top);
+      ctx.fillStyle = options.bottomRight;
+      ctx.fillRect(midX, midY, right - midX, bottom - midY);
+      ctx.fillStyle = options.bottomLeft;
+      ctx.fillRect(left, midY, midX - left, bottom - midY);
+      ctx.restore();
+    }
+}
 
 const chart = new Chart(chartCanvas, {
     type: "line",
     data: chartData,
     options: {
+        plugins: {
+          quadrants: {
+            topLeft: CHART_COLORS.red,
+            topRight: CHART_COLORS.blue,
+            bottomRight: CHART_COLORS.green,
+            bottomLeft: CHART_COLORS.yellow,
+          }
+        }
+      },
+    plugins: [quadrants]
         scales: {
             y: {
                 title: {
@@ -83,25 +121,3 @@ blurInput.oninput = (e) => {
     calculateExposure();
 }
 
-// window.onload = function() {
-//   var originalLineDraw = Chart.controllers.line.prototype.draw;
-//   Chart.helpers.extend(Chart.controllers.line.prototype, {
-//     draw: function() {
-//       originalLineDraw.apply(this, arguments);
-//       var chart = this.chart;
-//       var ctx = chart.chart.ctx;
-//       var index = chart.config.data.lineAtIndex;
-//       if (index) {
-//         var xaxis = chart.scales['x-axis-0'];
-//         var yaxis = chart.scales['y-axis-0'];
-//         ctx.save();
-//         ctx.beginPath();
-//         ctx.moveTo(xaxis.getPixelForValue(undefined, index), yaxis.top);
-//         ctx.strokeStyle = '#ff0000';
-//         ctx.lineTo(xaxis.getPixelForValue(undefined, index), yaxis.bottom);
-//         ctx.stroke();
-//         ctx.restore();
-//       }
-//     }
-//   });
-// }
